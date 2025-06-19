@@ -40,7 +40,7 @@ module.exports = {
       }
 
       const imgs = event.messageReply.attachments.map(a => a.url);
-      const url = `https://cdp-api-0txi.onrender.com/api/cdp/add?url=${encodeURIComponent(imgs[0])},${encodeURIComponent(imgs[1])}`;
+      const url = `https://cdp-api-zph0.onrender.com/api/cdp/add?url=${encodeURIComponent(imgs[0])},${encodeURIComponent(imgs[1])}`;
 
       try {
         const res = await axios.get(url);
@@ -54,7 +54,7 @@ module.exports = {
 
     if (args[0] === "list") {
       try {
-        const res = await axios.get("https://cdp-api-0txi.onrender.com/api/cdp/list");
+        const res = await axios.get("https://cdp-api-zph0.onrender.com/api/cdp/list");
         return message.reply(`😘 𝘛𝘰𝘵𝘢𝘭 𝘤𝘰𝘶𝘱𝘭𝘦 𝘪𝘮𝘢𝘨𝘦𝘴: ${res.data.total}`);
       } catch {
         return message.reply("❌ 𝘊𝘰𝘶𝘭𝘥𝘯'𝘵 𝘧𝘦𝘵𝘤𝘩 𝘭𝘪𝘴𝘵.");
@@ -63,7 +63,7 @@ module.exports = {
 
     // ✅ Main CDP fetch with safe image loading
     try {
-      const res = await axios.get("https://cdp-api-0txi.onrender.com/api/cdp");
+      const res = await axios.get("https://cdp-api-zph0.onrender.com/api/cdp");
       const { boy, girl } = res.data.data;
 
       let boyStream, girlStream;
