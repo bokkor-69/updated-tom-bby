@@ -14,7 +14,7 @@ module.exports = {
   },
 
   onStart: async function({ event, message, args }) {
-    const baseUrl = "https://meme-api-pqxm.onrender.com/api/meme";
+    const baseUrl = "https://meme-api-4gdc.onrender.com/api/meme";
 
     if (args[0] === "add") {
       let urlsToAdd = [];
