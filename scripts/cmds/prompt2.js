@@ -15,14 +15,8 @@ const onStart = async function({ api, event, args }) {
         event.messageID
       );
     }
-    
-    const imageUrl = event.messageReply.attachments[0].url;
-    const tinyUrlResponse = await axios.get(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(imageUrl)}`);
-    const U = tinyUrlResponse.data;
-    
-    const uploadResponse = await axios.get(`https://remakeai-production.up.railway.app/upload?url=${encodeURIComponent(U)}`);
-    const url = uploadResponse.data?.url;
 
+    const imageUrl = event.messageReply.attachments[0].url;
     const style = args.join(' ');
     if (!style) {
       return api.sendMessage(
@@ -31,18 +25,18 @@ const onStart = async function({ api, event, args }) {
         event.messageID
       );
     }
-    
-    const promptResponse = await axios.get(`${global.GoatBot.config.nyx}api/prompt?imageUrl=${encodeURIComponent(url)}&style=${encodeURIComponent(style)}`);
-    const formattedData =promptResponse.data.data;
-    
+
+    const promptResponse = await axios.get(`${global.GoatBot.config.nyx}api/prompt?imageUrl=${encodeURIComponent(imageUrl)}&style=${encodeURIComponent(style)}`);
+    const formattedData = promptResponse.data.data;
+
     api.sendMessage(
       formattedData,
       event.threadID,
       event.messageID
     );
-    
+
   } catch (error) {
-api.sendMessage(
+    api.sendMessage(
       '❌ An error occurred while processing your request.',
       event.threadID,
       event.messageID
