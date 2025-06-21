@@ -1,10 +1,8 @@
 const axios = require("axios");
 
 const baseApiUrl = async () => {
-  const base = await axios.get(
-    `https://raw.githubusercontent.com/Mostakim0978/D1PT0/refs/heads/main/baseApiUrl.json`,
-  );
-  return base.data.xnil;
+  const base = `https://rest-nyx-apis-production.up.railway.app/`;
+  return base;
 };
 
 module.exports = {
@@ -12,7 +10,7 @@ module.exports = {
     name: "tikinfo",
     aliases: ["stalktik"],
     version: "1.0",
-    author: "xnil6x",
+    author: "xyz",
     countDown: 5,
     role: 0,
     shortDescription: "Get TikTok user info",
@@ -33,50 +31,37 @@ module.exports = {
     }
 
     try {
-      const response = await axios.get(
-        `${await baseApiUrl()}/xnil/tikstalk?uniqueid=${userName}`);
+      const baseUrl = await baseApiUrl();
+      const response = await axios.get(`${baseUrl}api/tikstalk?query=${userName}`);
 
-      if (!response.data || !response.data.id) {
+      if (!response.data || response.data.code !== 0) {
         return api.sendMessage("❌ 𝑼𝒔𝒆𝒓 𝒏𝒐𝒕 𝒇𝒐𝒖𝒏𝒅 𝒐𝒓 𝒊𝒏𝒗𝒂𝒍𝒊𝒅 𝒓𝒆𝒔𝒑𝒐𝒏𝒔𝒆!", event.threadID);
       }
 
+      const user = response.data.data.user;
+      const stats = response.data.data.stats;
+
       const userInfoMessage = {
-        body:
+        body: 
 `📱 𝑻𝒊𝒌𝑻𝒐𝒌 𝑼𝒔𝒆𝒓 𝑰𝒏𝒇𝒐 ✨
 
 ━━━━━━━━━━━━━━━━━━━
 
-🆔 𝑼𝒔𝒆𝒓 𝑰𝑫:
-${response.data.id}
+💀 𝑼𝒔𝒆𝒓𝒏𝒂𝒎𝒆: ${user.uniqueId} \n
+💫 𝑵𝒊𝒄𝒌𝒏𝒂𝒎𝒆: ${user.nickname} \n
+👥 𝑭𝒐𝒍𝒍𝒐𝒘𝒆𝒓𝒔: ${stats.followerCount} \n
+👀 𝑭𝒐𝒍𝒍𝒐𝒘𝒊𝒏𝒈: ${stats.followingCount} \n
+🖤 𝑯𝒆𝒂𝒓𝒕𝒔: ${stats.heartCount} \n
+✨ 𝑽𝒊𝒅𝒆𝒐𝒔: ${stats.videoCount} \n
 
-👤 𝑼𝒔𝒆𝒓𝒏𝒂𝒎𝒆:
-${response.data.username}
+🖋️ 𝑩𝒊𝒐:
+${user.signature || "None"}
 
-📝 𝑵𝒊𝒄𝒌𝒏𝒂𝒎𝒆:
-${response.data.nickname}
 
-💬 𝑺𝒊𝒈𝒏𝒂𝒕𝒖𝒓𝒆:
-${response.data.signature || "None"}
-
-👥 𝑭𝒐𝒍𝒍𝒐𝒘𝒆𝒓𝒔:
-${response.data.followerCount}
-
-➡️ 𝑭𝒐𝒍𝒍𝒐𝒘𝒊𝒏𝒈:
-${response.data.followingCount}
-
-❤️ 𝑯𝒆𝒂𝒓𝒕𝒔:
-${response.data.heartCount}
-
-🎞️ 𝑽𝒊𝒅𝒆𝒐𝒔:
-${response.data.videoCount}
-
-🔐 𝑺𝒆𝒄𝑼𝑰𝑫:
-${response.data.secUid}
-
-🖼️ 𝑷𝒓𝒐𝒇𝒊𝒍𝒆 𝑷𝒊𝒄: 👇
+🖼️ 𝑷𝒓𝒐𝒇𝒊𝒍𝒆 𝑰𝒎𝒂𝒈𝒆 👇
 
 ━━━━━━━━━━━━━━━━━━━`,
-        attachment: await global.utils.getStreamFromURL(response.data.avatarLarger)
+        attachment: await global.utils.getStreamFromURL(user.avatarLarger)
       };
 
       return api.sendMessage(userInfoMessage, event.threadID);
